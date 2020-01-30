@@ -2,7 +2,14 @@
 
 Simple sd_notify(3) client functionality implemented in Python 3.
 
-Usage:
+## Install
+
+```
+$ pip install sd-notify
+```
+
+## Usage
+
 ```
 import sd_notify
 
@@ -24,14 +31,6 @@ time.sleep(3)
 notify.notify_error("An irrecoverable error occured!")
 # The service manager will probably kill the program here
 time.sleep(3)
-```
-
-Author: stig@stigok.com Dec 2019
-
-## Install
-
-```
-$ pip install sd-notify
 ```
 
 ## Reference
@@ -58,3 +57,10 @@ Report ready service state, i.e. completed initialisation
 #### `status(msg)`
 Set a service status message
 
+## Author
+
+stig@stigok.com Dec 2019
+
+## License
+
+See LICENSE file
