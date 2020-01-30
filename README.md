@@ -4,19 +4,25 @@ Simple sd_notify(3) client functionality implemented in Python 3.
 
 Usage:
 ```
-notify = Notifier()
+import sd_notify
+
+notify = sd_notify.Notifier()
 if not notify.enabled():
+    # Then it's probably not running is systemd with watchdog enabled
     raise Exception("Watchdog not enabled")
 
-notify.status("Starting things up...")
+# Report a status message
+notify.status("Initialising my service...")
 time.sleep(3)
 
-notify.ready() # Init complete
-notify.status("Waiting for requests...")
+# Report that the program init is complete
+notify.ready()
+notify.status("Waiting for web requests...")
 time.sleep(3)
 
-notify.notify_error("Making the program quit with error!")
-# systemd will kill the program here
+# Report an error to the service manager
+notify.notify_error("An irrecoverable error occured!")
+# The service manager will probably kill the program here
 time.sleep(3)
 ```
 
