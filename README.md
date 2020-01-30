@@ -28,6 +28,12 @@ time.sleep(3)
 
 Author: stig@stigok.com Dec 2019
 
+## Install
+
+```
+$ pip install sd-notify
+```
+
 ## Reference
 ### `<class 'sd_notify.Notifier'>`
 #### `_send(msg)`
