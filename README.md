@@ -10,7 +10,7 @@ $ pip install sd-notify
 
 ## Usage
 
-```
+```python
 import sd_notify
 
 notify = sd_notify.Notifier()
