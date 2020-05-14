@@ -1,0 +1,15 @@
+# Example sd-notify service file - fix path below
+[Unit]
+Description=sd-notify example service
+StartLimitBurst=5
+StartLimitIntervalSec=600
+
+[Service]
+ExecStart=/home/user/sd-notify/examples/daemon.py
+Restart=on-failure
+RestartSec=10
+Type=notify
+WatchdogSec=15
+
+[Install]
+WantedBy=default.target

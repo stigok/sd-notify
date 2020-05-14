@@ -1,0 +1,20 @@
+This is an example showing how to use daemon.py to experiment with sd_notify
+
+To install:
+systemctl --user link $(pwd)/sd-notify-example.service
+systemctl --user daemon-reload  # any time you modify sd-notify-example.service or restart StartLimit timers
+
+To start:
+systemctl --user start sd-notify-example.service
+
+To check / view logs:
+systemctl --user status sd-notify-example.service
+journalctl --user -eu sd-notify-example
+
+To stop:
+systemctl --user stop sd-notify-example.service
+
+Things to try:
+ - Play with daemon.py!
+ - Change the service file and remove the watchdog requirements or change the timeout
+ - Uncomment the notify_error() call

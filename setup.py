@@ -6,7 +6,7 @@ def readme():
 
 setup(
     name="sd-notify",
-    version="0.1.0",
+    version="0.2.0",
     py_modules=["sd_notify"],
     author="stigok",
     author_email="stig@stigok.com",

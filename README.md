@@ -1,11 +1,15 @@
 # sd_notify
 
-Simple sd_notify(3) client functionality implemented in Python 3.
+sd_notify(3) and sd_watchdog_enabled(3) client functionality implemented in Python 3
 
 ## Install
-
 ```
 $ pip install sd-notify
+```
+or
+```
+$ git clone ...
+$ make install
 ```
 
 ## Usage
@@ -19,13 +23,19 @@ if not notify.enabled():
     raise Exception("Watchdog not enabled")
 
 # Report a status message
-notify.status("Initialising my service...")
+notify.status("Starting my service...")
 time.sleep(3)
 
 # Report that the program init is complete
 notify.ready()
 notify.status("Waiting for web requests...")
+notify.notify()
 time.sleep(3)
+
+# Compute time between notifications
+timeout_half_sec = int(float(notify.timeout) / 2e6)  # Convert us->s and half that
+time.sleep(timeout_half_sec)
+notify.notify()
 
 # Report an error to the service manager
 notify.notify_error("An irrecoverable error occured!")
@@ -33,33 +43,42 @@ notify.notify_error("An irrecoverable error occured!")
 time.sleep(3)
 ```
 
-## Reference
+## Public Reference
 ### `<class 'sd_notify.Notifier'>`
-#### `_send(msg)`
-Send string `msg` as bytes on the notification socket
 
-#### `enabled()`
-Return a boolean stating whether watchdog is enabled
+#### `is_enabled`
+Boolean property stating whether watchdog capability is enabled.
+Legacy version `enabled()` is also available.
+
+#### `timeout`
+Property reporting the number of microseconds (int) before process will be killed.
+
+It is recommended that you call `notify()` once roughly half of this interval has passed (see `notify_due`).
+
+#### `timeout_td`
+Property that is the same as `timeout` but presented as `datetime.timedelta` for easier manipulation.
+
+#### `notify_due`
+Boolean property indicating more than half of the watchdog interval has passed since last update.
 
 #### `notify()`
-Report a healthy service state
+Report a healthy service state. Other calls, _e.g._ `status()` do *not* reset the watchdog.
 
 #### `notify_error(msg=None)`
-Report a watchdog error. This program will likely be killed by the
-service manager.
+Report an error to the watchdog manager. This program will likely be killed upon receipt.
 
-If `msg` is not None, it will be reported as an error message to the
-service manager.
+If `msg` is provided, it will be reported as a status message prior to the error.
 
 #### `ready()`
-Report ready service state, i.e. completed initialisation
+Report ready service state, _i.e._ completed initialisation (only needed with `Type=notify`)
 
 #### `status(msg)`
-Set a service status message
+Send a service status message.
 
-## Author
+## Original Author
 
 stig@stigok.com Dec 2019
+ * Additional contributors can be found in GitHub repository history
 
 ## License
 
